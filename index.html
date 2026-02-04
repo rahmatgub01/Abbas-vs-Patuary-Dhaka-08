@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Abbas vs Patuary: ঢাকা ০৮</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@500;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- AUDIO FILES -->
+    <audio id="snd-intro" src="https://www.dropbox.com/scl/fi/h10zsum7362scrh94abjf/intro-chada.mp3?rlkey=jx3oc3m4vzs2ooon2f1brnl2f&st=w4eo7pk3&dl=1"></audio>
+    <audio id="snd-bgm" loop src="https://www.dropbox.com/scl/fi/bajxeqoz8chqbj3d601rl/1769966912891.mp3?rlkey=j9vjfx4hgljgz1bdkkb0cu6av&st=44aph8xp&dl=1"></audio>
+    <audio id="snd-hit" src="https://www.dropbox.com/scl/fi/lvgidikz8lgrym70cc57a/chadabaz.mp3?rlkey=zefowlocqswaz697iu3a6gymp&st=8qtqntpm&dl=1"></audio>
+    <audio id="snd-save" src="https://www.dropbox.com/scl/fi/iep8g3xtadod3wxgzyifb/oi-kar-kotha.mp3?rlkey=se3d2llz1k3e1wlk72dmfltml&st=3jw2d9f3&dl=1"></audio>
+    <audio id="snd-over" src="https://www.dropbox.com/scl/fi/ta2hfyaq8offlf5a1yak4/munajat.mp3?rlkey=8nhl6ncb4ptkr03i9bn3ad9hy&st=gchxazyz&dl=1"></audio>
+    <audio id="snd-powerup" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3"></audio>
+    <audio id="snd-boss" src="https://assets.mixkit.co/sfx/preview/mixkit-warning-alarm-buzzer-895.mp3"></audio>
+
+    <!-- 1. INTRO ANIMATION -->
+    <div id="intro-screen" onclick="enableAudio()">
+        <h1 class="intro-title">আব্বাস বনাম পাটোয়ারী</h1>
+        <div class="intro-faces">
+            <img id="intro-abbas" class="intro-face" src="" alt="A">
+            <img id="intro-pat" class="intro-face" src="" alt="P">
+        </div>
+        <p style="margin-top: 30px; font-size: 20px; color: #555; font-weight: bold;">লোডিং হচ্ছে...</p>
+        <p style="font-size: 14px; color: #999;">(শব্দ শুনতে স্ক্রিনে ট্যাপ করুন)</p>
+    </div>
+
+    <!-- 2. RULES POPUP (UPDATED TEXT) -->
+    <div id="rules-modal">
+        <div class="rules-box">
+            <h2>পাটোয়ারীর হাত থেকে আব্বাসকে বাঁচান:</h2>
+            <p>১. পাটোয়ারী আব্বাসকে <span class="rules-highlight">কামড় দিতে</span> আসছে।</p>
+            <p>২. আপনি আব্বাসকে <span class="rules-highlight">রক্ষা করুন</span> (মৌমাছি ট্যাপ করুন)।</p>
+            <p>৩. <span class="rules-highlight">১০ বার</span> কামড় দিলে খেলা শেষ!</p>
+            <p>৪. <span class="rules-highlight">গোল্ডেন চা</span> পেলে রাগ কমবে!</p>
+            <button class="btn-start" onclick="startGame()">খেলা শুরু করুন</button>
+        </div>
+    </div>
+
+    <!-- 3. GAME OVER -->
+    <div id="game-over-screen">
+        <h1 style="font-size: 45px; color: #ffeb3b; margin-bottom: 5px; text-shadow: 2px 2px red;">আব্বাসের ধৈর্য্য শেষ! </h1>
+        <p style="font-size: 20px;">এখন মোনাজাত শুরু...</p>
+        <h2 id="final-score" style="font-size: 30px; margin: 15px 0;">আপনি বাঁচিয়েছেন : ০</h2>
+        <h3 id="high-score" style="font-size: 24px; color: #4CAF50; margin: 5px 0;">সর্বোচ্চ স্কোর: ০</h3>
+        
+        <button class="share-btn" onclick="shareGame()">
+            📢 বন্ধুদের সাথে শেয়ার করুন
+        </button>
+
+        <button class="btn-start" style="background:#f44336; margin-top:20px;" onclick="location.reload()">আবার খেলুন</button>
+    </div>
+
+    <!-- PAUSE OVERLAY -->
+    <div id="pause-overlay">
+        <h1 class="pause-title">খেলা থামানো</h1>
+        <p class="pause-instruction">জারি করতে পুনরায় পাউস বোতাম টিপুন</p>
+        <p class="pause-instruction">ESC কীও ব্যবহার করতে পারেন</p>
+        <button class="btn-start" onclick="togglePause()">জারি করুন</button>
+    </div>
+
+    <!-- 4. HUD -->
+    <div id="ui-layer">
+        <div class="hud-top">
+            <div id="score-box">বাঁচানো: ০</div>
+            <div id="anger-container">
+                <div id="anger-bar"></div>
+                <div id="anger-label">রাগ</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. GAME WORLD -->
+    <div id="game-area">
+        <div id="hero-container">
+            <div id="hit-zone"></div>
+            <img id="hero-img" src="" alt="Abbas">
+        </div>
+    </div>
+
+    <!-- PAUSE BUTTON -->
+    <button id="pause-btn" onclick="togglePause()" style="display: none;"></button>
+
+    <script src="script.js"></script>
+</body>
+</html> 
